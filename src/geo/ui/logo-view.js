@@ -1,6 +1,6 @@
 var View = require('../../core/view');
 var template = require('./logo.tpl');
-var URL = 'https://carto.com';
+var URL = 'http://www.onenetcom.cn';
 
 module.exports = View.extend({
   className: 'CDB-Logo',
