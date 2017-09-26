@@ -249,8 +249,8 @@ var Infowindow = View.extend({
   },
   
   _loadVideo: function () {
-    this._renderCoverLoader();
-    this._startCoverLoader();
+    //this._renderCoverLoader();
+    //this._startCoverLoader();
 
     var url = this._getCoverURL();
 
@@ -259,7 +259,7 @@ var Infowindow = View.extend({
     }
 
     if (!this._isValidURL(url)) {
-      this._stopCoverLoader();
+      //this._stopCoverLoader();
       this._showInfowindowImageError();
       return;
     }
@@ -277,16 +277,16 @@ var Infowindow = View.extend({
   
  _loadVideoFromTemplate: function (url) {
     this.$('.video-js poster').remove();
-    this._loadVideoFromUrl(url);
+    this._loadVideoFromUrl("http://pic.jj20.com/up/allimg/911/0F215095I0/150F2095I0-1.jpg");
   },
   
   _loadVideoFromUrl: function (url) {
     var $videojs = this.$('.video-js');
 
     $videojs
-      .attr('poster', url);
+      .attr('poster', "http://pic.jj20.com/up/allimg/911/0F215095I0/150F2095I0-1.jpg");
     
-    this._startCoverLoader();
+    //this._startCoverLoader();
 
     var $source = $("<source  type='video/mp4'>");
     $videojs.append($source);
