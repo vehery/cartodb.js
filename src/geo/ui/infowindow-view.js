@@ -264,14 +264,35 @@ var Infowindow = View.extend({
       return;
     }
 
-    if (this._containsTemplateCover()) {
+    if (this._containsTemplateVideo()) {
       this._loadCoverFromTemplate(url);
     } else {
       this._loadCoverFromUrl(url);
     }
   },
+ 
+  _containsTemplateVideo: function () {
+    return this.$('.video-js poster').length > 0;
+  },
   
+ _loadVideoFromTemplate: function (url) {
+    this.$('.video-js poster').remove();
+    this._loadVideoFromUrl(url);
+  },
   
+  _loadVideoFromUrl: function (url) {
+    var $videojs = this.$('.video-js');
+
+    this._startCoverLoader();
+
+    var $source = $("<source  type='video/mp4'>");
+    $videojs.append($source);
+
+    $source
+      .load(this._onLoadImageSuccess)
+      .error(this._onLoadImageError)
+      .attr('src', url);
+  },
   /**
    *  Does header contain cover?
    */
