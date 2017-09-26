@@ -283,6 +283,9 @@ var Infowindow = View.extend({
   _loadVideoFromUrl: function (url) {
     var $videojs = this.$('.video-js');
 
+    $videojs
+      .attr('poster', url);
+    
     this._startCoverLoader();
 
     var $source = $("<source  type='video/mp4'>");
