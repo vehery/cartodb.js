@@ -111,6 +111,10 @@ var Infowindow = View.extend({
         this._loadCover();
       }
 
+      if (this._containsVideo()) {
+        this._loadVideo();
+      }
+      
       this._setupClasses();
       this._renderScroll();
     }
@@ -236,6 +240,38 @@ var Infowindow = View.extend({
     return attr;
   },
 
+  /**
+  * Does VideoJS contains?
+  * zhongjin
+  */
+  _containsVideo: function () {
+    return this.$('.video-js').length > 0;
+  },
+  
+  _loadVideo: function () {
+    this._renderCoverLoader();
+    this._startCoverLoader();
+
+    var url = this._getCoverURL();
+
+    if (this._isLoadingFields()) {
+      return;
+    }
+
+    if (!this._isValidURL(url)) {
+      this._stopCoverLoader();
+      this._showInfowindowImageError();
+      return;
+    }
+
+    if (this._containsTemplateCover()) {
+      this._loadCoverFromTemplate(url);
+    } else {
+      this._loadCoverFromUrl(url);
+    }
+  },
+  
+  
   /**
    *  Does header contain cover?
    */
