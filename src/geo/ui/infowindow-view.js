@@ -265,9 +265,9 @@ var Infowindow = View.extend({
     }
 
     if (this._containsTemplateVideo()) {
-      this._loadCoverFromTemplate(url);
+      this._loadVideoFromTemplate(url);
     } else {
-      this._loadCoverFromUrl(url);
+      this._loadVideoFromUrl(url);
     }
   },
  
