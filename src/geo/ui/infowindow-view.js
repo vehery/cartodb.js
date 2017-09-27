@@ -295,6 +295,9 @@ var Infowindow = View.extend({
       .load(this._onLoadImageSuccess)
       .error(this._onLoadImageError)
       .attr('src', url);
+
+    videojs(document.querySelector('.video-js'));
+
   },
   /**
    *  Does header contain cover?
