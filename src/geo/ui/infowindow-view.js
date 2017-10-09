@@ -6,7 +6,7 @@ var sanitize = require('../../core/sanitize');
 var Template = require('../../core/template');
 var View = require('../../core/view');
 var util = require('../../core/util');
-
+var myPlayer;
 var ESC_KEY = 27;
 
 /**
@@ -264,11 +264,8 @@ var Infowindow = View.extend({
       return;
     }
 
-    if (this._containsTemplateVideo()) {
-      this._loadVideoFromTemplate(url);
-    } else {
-      this._loadVideoFromUrl(url);
-    }
+
+    this._loadVideoFromUrl(url);
   },
  
   _containsTemplateVideo: function () {
@@ -283,24 +280,28 @@ var Infowindow = View.extend({
   _loadVideoFromUrl: function (url) {
     var $videojs = this.$('.video-js');
 
-    $videojs
-      .attr('poster', "http://pic.jj20.com/up/allimg/911/0F215095I0/150F2095I0-1.jpg");
+    var posterUrl = this._getPosterURL();
     
+    if (this._isValidURL(posterUrl)) {
+      $videojs
+       .attr('poster', posterUrl);
+    }  
     //this._startCoverLoader();
 
-    var $source = $("<source  type='video/mp4'>");
-    $videojs.append($source);
-
+    var $source = $("<source type='application/x-mpegURL' withCredentials=true>");
     $source
-      .load(this._onLoadImageSuccess)
-      .error(this._onLoadImageError)
       .attr('src', url);
 
-    //videojs(document.querySelector('.video-js'));
-    videojs("myvideo_1").ready(function(){
+    $videojs.append($source);
+
+    myPlayer = videojs('myvideo_1');
+
+    myPlayer.ready(function(){
         var myPlayer = this;
         myPlayer.play();
     });
+    
+    
   },
   /**
    *  Does header contain cover?
@@ -313,6 +314,26 @@ var Infowindow = View.extend({
     return this.$('.js-cover img').length > 0;
   },
 
+  _getVideoURL: function () {
+    var content = this.model.get('content');
+
+    if (content && content.fields && content.fields.length > 0) {
+      return (content.fields[0].value || '').toString();
+    }
+
+    return false;
+  },
+
+  _getPosterURL: function () {
+    var content = this.model.get('content');
+
+    if (content && content.fields && content.fields.length > 1) {
+      return (content.fields[1].value || '').toString();
+    }
+
+    return false;
+  },
+  
   _getCoverURL: function () {
     var content = this.model.get('content');
     var imageSRC = this.$('.js-cover img').attr('src');
@@ -524,8 +545,9 @@ var Infowindow = View.extend({
       this.model.set('visibility', false);
     }
 
-    var myPlayer = videojs('myvideo_1');
-    myPlayer.dispose();
+    if (this._containsVideo() && myPlayer) {
+       myPlayer.dispose();
+    }  
   },
 
   /**
