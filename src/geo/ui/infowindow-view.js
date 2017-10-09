@@ -296,8 +296,11 @@ var Infowindow = View.extend({
       .error(this._onLoadImageError)
       .attr('src', url);
 
-    videojs(document.querySelector('.video-js'));
-
+    //videojs(document.querySelector('.video-js'));
+    videojs("myvideo_1").ready(function(){
+        var myPlayer = this;
+        myPlayer.play();
+    });
   },
   /**
    *  Does header contain cover?
@@ -520,6 +523,9 @@ var Infowindow = View.extend({
     if (this.model.get('visibility')) {
       this.model.set('visibility', false);
     }
+
+    var myPlayer = videojs('myvideo_1');
+    myPlayer.dispose();
   },
 
   /**
